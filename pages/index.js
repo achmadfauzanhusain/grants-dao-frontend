@@ -1,115 +1,93 @@
-import Image from "next/image";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Playfair_Display } from 'next/font/google'
+import Link from 'next/link'
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const playfair = Playfair_Display({ 
+  subsets: ['latin'], 
+  weight: ['400', '600', '800']
+})
 
 export default function Home() {
   return (
-    <div
-      className={`${geistSans.className} ${geistMono.className} font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20`}
-    >
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              pages/index.js
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    <div>
+      {/* Board */}
+      <div className="h-screen flex flex-col items-center justify-center">
+        <h1 className={`text-center text-7xl md:text-8xl font-bold ${playfair.className}`}>GRANTS DAO</h1>
+        <p className="text-lg md:text-xl mt-4 text-center opacity-75">funding & supporting web3 <br /> projects</p>
+
+        <div className="flex mt-8 gap-4">
+          <Link href="/store" className="bg-[#627EEA] text-xs md:text-sm text-white px-7 md:px-9 py-4 rounded-md font-semibold hover:bg-[#4a5bbd] transition-all">
+            STORE ETH
+          </Link>
+
+          <Link href="/stake" className="border-[#627EEA] text-xs md:text-sm border-2 text-[#627EEA] px-7 md:px-9 py-4 rounded-md font-semibold hover:bg-[#627EEA] hover:text-white transition-all">
+            STAKE ETH
+          </Link>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </div>
+
+      {/* Proposal */}
+      <div className='px-4 md:px-8 py-8 bg-white flex flex-col items-center'>
+        {/* Head */}
+        <div className='flex flex-col sm:flex-row sm:justify-between items-start sm:items-center w-full max-w-6xl gap-4'>
+          <div>
+            <h1 className={`${playfair.className} font-bold text-4xl md:text-6xl`}>PROPOSAL</h1>
+            <p className='text-sm md:text-base mt-4 opacity-60 w-[75%] sm:w-full'>
+              you must stake 0.01 ETH for 1 vote & stake <br className='hidden sm:block' />
+              min 0.1 ETH for create proposal
+            </p>
+          </div>
+          <Link href="/proposal/create" className="bg-[#627EEA] hover:bg-[#4a5bbd] transition-all duration-300 text-white font-semibold rounded-md px-5 py-3 text-xs md:text-sm">
+            Create Proposal
+          </Link>
+        </div>
+
+        {/* List Proposals */}
+        <div className="mt-6 w-full max-w-6xl flex flex-col gap-4">
+          <Link href="/proposal" className="flex flex-col md:flex-row justify-between items-start md:items-center px-4 py-6 bg-[#F6F6F6] rounded-2xl gap-6 shadow-sm">
+            {/* Left Section */}
+            <div className="flex-1">
+              <h2 className="text-2xl md:text-4xl font-bold">EDUCATION DAPP</h2>
+              <p className="mt-2 text-sm md:text-base text-gray-500 max-w-md">
+                Aplikasi pembelajaran interaktif (misalnya pakai NFT badge) untuk mengajarkan dasar Ethereum, wallet, smart contract.
+              </p>
+            </div>
+
+            {/* Right Section */}
+            <div className="text-left md:text-right min-w-[140px]">
+              <h2 className="text-xl md:text-3xl font-bold">2 ETH</h2>
+              <div className="mt-2 text-xs md:text-sm text-gray-600">
+                <p className="mb-1">vote for:</p>
+                <div className="flex gap-2 justify-end">
+                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">agree</span>
+                  <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">don't agree</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+
+          <Link href="/proposal" className="flex flex-col md:flex-row justify-between items-start md:items-center px-4 py-6 bg-[#F6F6F6] rounded-2xl gap-6 shadow-sm">
+            {/* Left Section */}
+            <div className="flex-1">
+              <h2 className="text-2xl md:text-4xl font-bold">EDUCATION DAPP</h2>
+              <p className="mt-2 text-sm md:text-base text-gray-500 max-w-md">
+                Aplikasi pembelajaran interaktif (misalnya pakai NFT badge) untuk mengajarkan dasar Ethereum, wallet, smart contract.
+              </p>
+            </div>
+
+            {/* Right Section */}
+            <div className="text-left md:text-right min-w-[140px]">
+              <h2 className="text-xl md:text-3xl font-bold">2 ETH</h2>
+              <div className="mt-2 text-xs md:text-sm text-gray-600">
+                <p className="mb-1">vote for:</p>
+                <div className="flex gap-2 justify-end">
+                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">agree</span>
+                  <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">don't agree</span>
+                </div>
+              </div>
+            </div>
+          </Link>
+        </div>
+      </div>
     </div>
-  );
+  )
 }
