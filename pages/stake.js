@@ -1,4 +1,9 @@
 import { Playfair_Display } from 'next/font/google'
+import { BrowserProvider, Contract, Interface, parseEther } from "ethers";
+import { useEffect, useState } from "react";
+
+import config from "../config.json";
+import MyETHDAO from "../abis/MyETHDAO.json";
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -6,6 +11,34 @@ const playfair = Playfair_Display({
 })
 
 const Stake = () => {
+    const [provider, setProvider] = useState(null)
+    const [grantsDao, setGrantsDao] = useState(null)
+
+    const loadBlockchainData = async() => {
+        await window.ethereum.request({ method: 'eth_requestAccounts' })
+
+        const provider = new BrowserProvider(window.ethereum)
+        setProvider(provider)
+
+        const network = await provider.getNetwork();
+        const signer = await provider.getSigner();
+
+        const contract = new Contract(
+            config[network.chainId].MyETHDAO.address,
+            FauzanChenko,
+            signer
+        )
+        setGrantsDao(contract);
+    }
+
+    const stakeETH = async (amount) => {
+        if (!grantsDao) return;
+        
+    }
+
+    useEffect(() => {
+      loadBlockchainData();
+    }, [])
     return (
         <div className="px-4 md:px-8 py-12 md:py-24 bg-white flex flex-col items-center">
             <div className="w-full max-w-6xl">
