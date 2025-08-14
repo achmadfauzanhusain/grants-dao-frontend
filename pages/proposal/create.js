@@ -2,8 +2,8 @@ import { Playfair_Display } from 'next/font/google'
 import { BrowserProvider, Contract, parseEther, parseUnits, formatUnits } from "ethers"
 import { useEffect, useState } from "react"
 
-import config from "../config.json"
-import MyETHDAO from "../abis/MyETHDAO.json"
+import config from "../../config.json"
+import MyETHDAO from "../../abis/MyETHDAO.json"
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -13,6 +13,12 @@ const playfair = Playfair_Display({
 const CreateProposal = () => {
   const [signer, setSigner] = useState(null)
   const [grantsDao, setGrantsDao] = useState(null)
+
+  // form states
+  const [title, setTitle] = useState("")
+  const [summary, setSummary] = useState("")
+  const [ethAmount, setEthAmount] = useState(0)
+  const [aboutOwner, setAboutOwner] = useState("")
 
   const loadBlockchainData = async () => {
     await window.ethereum.request({ method: 'eth_requestAccounts' })
@@ -30,7 +36,24 @@ const CreateProposal = () => {
   }
 
   const createProposal = async () => {
-    if (!grantsDao) return
+    if (!grantsDao) return;
+    if (!title || !summary || !ethAmount || !aboutOwner) {
+      alert("Please fill all fields")
+      return
+    }
+    try {
+      const tx = await grantsDao.createProposal(
+        title,
+        summary,
+        parseEther(ethAmount.toString()),
+        aboutOwner
+      )
+      await tx.wait()
+      alert("Proposal created successfully!")
+    } catch (error) {
+      console.log("Error creating proposal:", error)
+      alert("Failed to create proposal. Please try again.")
+    }
   }
 
   useEffect(() => {
@@ -47,6 +70,8 @@ const CreateProposal = () => {
         <div className="mt-10 md:mt-14 flex flex-col gap-10 md:gap-14">
           {/* title */}
           <input
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             type="text"
             placeholder="What is the name of your proposal?"
             className="outline-none border-b-2 w-full sm:w-[90%] text-2xl sm:text-3xl md:text-4xl py-3 font-semibold"
@@ -54,6 +79,8 @@ const CreateProposal = () => {
 
           {/* summary */}
           <input
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
             type="text"
             placeholder="What is the proposal summary?"
             className="outline-none border-b-2 w-full sm:w-[90%] text-2xl sm:text-3xl md:text-4xl py-3 font-semibold"
@@ -65,6 +92,8 @@ const CreateProposal = () => {
               How much ETH do you need?
             </h2>
             <input
+              value={ethAmount}
+              onChange={(e) => setEthAmount(e.target.value)}
               type="number"
               placeholder="0"
               className="outline-none border-b-2 text-2xl sm:text-3xl md:text-4xl py-3 font-semibold w-32"
@@ -77,6 +106,8 @@ const CreateProposal = () => {
               Explain yourself as proposal owner
             </h2>
             <input
+              value={aboutOwner}
+              onChange={(e) => setAboutOwner(e.target.value)}
               type="text"
               placeholder="Whats your name? education? social media? etc"
               className="outline-none border-b-2 w-full sm:w-[90%] text-base sm:text-xl md:text-2xl py-3 font-semibold"
@@ -104,7 +135,7 @@ const CreateProposal = () => {
           </div>
 
             {/* submit button */}
-            <button className="bg-[#627EEA] hover:bg-[#4a5bbd] transition-all duration-300 font-semibold rounded-md text-white px-6 py-3 text-sm cursor-pointer">
+            <button onClick={createProposal} className="bg-[#627EEA] hover:bg-[#4a5bbd] transition-all duration-300 font-semibold rounded-md text-white px-6 py-3 text-sm cursor-pointer">
                 Create Proposal
             </button>
         </div>

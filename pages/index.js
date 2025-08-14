@@ -1,5 +1,10 @@
 import { Playfair_Display } from 'next/font/google'
 import Link from 'next/link'
+import { BrowserProvider, Contract, parseEther, parseUnits, formatUnits } from "ethers"
+import { useEffect, useState } from "react"
+
+import config from "../config.json"
+import MyETHDAO from "../abis/MyETHDAO.json"
 
 const playfair = Playfair_Display({ 
   subsets: ['latin'], 
@@ -7,6 +12,63 @@ const playfair = Playfair_Display({
 })
 
 export default function Home() {
+  const [signer, setSigner] = useState(null)
+  const [grantsDao, setGrantsDao] = useState(null)
+
+  const [proposals, setProposals] = useState([])
+
+  const loadBlockchainData = async() => {
+    await window.ethereum.request({ method: 'eth_requestAccounts' })
+  
+    const provider = new BrowserProvider(window.ethereum)
+    const network = await provider.getNetwork()
+  
+    const signer = await provider.getSigner()
+    setSigner(signer)
+  
+    const contract = new Contract(
+      config[network.chainId].MyETHDAO.address,
+      MyETHDAO,
+      signer
+    )
+    setGrantsDao(contract)
+  }
+
+  // fetch all proposals data
+  const fetchProposals = async() => {
+    if (!grantsDao || !signer) return;
+
+    try {
+      const proposalsCount = await grantsDao.proposalCount();
+      const proposals = [];
+      for (let i = 1; i <= Number(proposalsCount); i++) {
+        const proposal = await grantsDao.proposals(i);
+        proposals.push({
+          title: proposal[0],
+          description: proposal[1],
+          amount: formatUnits(proposal[2]), // ubah dari wei ke ETH
+          summary: proposal[3],
+          recipient: proposal[4],
+          deadline: new Date(Number(proposal[5]) * 1000).toLocaleString(), // ubah timestamp ke tanggal
+          votesFor: Number(proposal[6]),
+          votesAgainst: Number(proposal[7]),
+          executed: proposal[8]
+        })
+        setProposals(proposals);
+      }
+    } catch (error) {
+      console.error("Error fetching proposals:", error);
+    }
+  }
+
+  useEffect(() => {
+    loadBlockchainData()
+  }, [])
+  useEffect(() => {
+    if (signer && grantsDao) {
+      fetchProposals();
+    }
+  }, [signer, grantsDao]);
   return (
     <div>
       {/* Board */}

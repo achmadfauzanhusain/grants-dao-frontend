@@ -76,7 +76,6 @@ const Stake = () => {
     useEffect(() => {
         loadBlockchainData()
     }, [])
-
     useEffect(() => {
         if (signer && grantsDao) {
             amountStaked()
