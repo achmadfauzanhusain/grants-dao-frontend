@@ -16,7 +16,7 @@ export default function Navbar({ account, setAccount }) {
   return (
     <div className="w-full fixed top-0 left-0 z-50">
       <div className="flex justify-between items-center px-6 py-6 md:py-8">
-        <h1 className="font-bold text-xs md:text-sm hover:bg-[#627EEA] hover:text-white p-1 px-2 rounded-lg cursor-pointer transition-all">TREASURY BALANCE</h1>
+        <Link href="/treasury-balance" className="font-bold text-xs md:text-sm hover:bg-[#627EEA] hover:text-white p-1 px-2 rounded-lg cursor-pointer transition-all">TREASURY BALANCE</Link>
 
         {/* Desktop Button */}
         {account ? (
