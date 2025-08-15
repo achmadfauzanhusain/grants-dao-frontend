@@ -153,7 +153,7 @@ const Proposal = () => {
                 {proposal.deadline}
                 </p>
 
-                <button onClick={() => executeProposal(id)} className='bg-[#627EEA] hover:bg-[#4a5bbd] text-white transition-all duration-300 text-center w-full mt-8 py-4 text-sm font-semibold rounded-md cursor-pointer'>Execute Proposal</button>
+                <button onClick={() => executeProposal(id)} className='bg-[#627EEA] hover:bg-[#4a5bbd] text-white transition-all duration-300 text-center w-full mt-8 py-4 text-xs md:text-sm font-semibold rounded-md cursor-pointer'>Execute Proposal</button>
             </div>
         </div>
     )
