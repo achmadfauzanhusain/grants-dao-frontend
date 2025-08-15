@@ -1,6 +1,6 @@
 import { Playfair_Display } from 'next/font/google'
 import Link from 'next/link'
-import { BrowserProvider, Contract, parseEther, parseUnits, formatUnits } from "ethers"
+import { BrowserProvider, Contract, formatUnits } from "ethers"
 import { useEffect, useState } from "react"
 
 import config from "../config.json"
@@ -105,49 +105,42 @@ export default function Home() {
 
         {/* List Proposals */}
         <div className="mt-6 w-full max-w-6xl flex flex-col gap-4">
-          <Link href="/proposal" className="flex flex-col md:flex-row justify-between items-start md:items-center px-4 py-6 bg-[#F6F6F6] rounded-2xl gap-6 shadow-sm">
-            {/* Left Section */}
-            <div className="flex-1">
-              <h2 className="text-2xl md:text-4xl font-bold">EDUCATION DAPP</h2>
-              <p className="mt-2 text-sm md:text-base text-gray-500 max-w-md">
-                Aplikasi pembelajaran interaktif (misalnya pakai NFT badge) untuk mengajarkan dasar Ethereum, wallet, smart contract.
-              </p>
-            </div>
-
-            {/* Right Section */}
-            <div className="text-left md:text-right min-w-[140px]">
-              <h2 className="text-xl md:text-3xl font-bold">2 ETH</h2>
-              <div className="mt-2 text-xs md:text-sm text-gray-600">
-                <p className="mb-1">vote for:</p>
-                <div className="flex gap-2 justify-end">
-                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">agree</span>
-                  <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">don't agree</span>
-                </div>
+          {proposals.map((proposal, index) => (
+            <Link key={index} href={`/proposal/${index + 1}`} className="flex flex-col md:flex-row justify-between items-start md:items-center px-4 py-6 bg-[#F6F6F6] rounded-2xl gap-6 shadow-sm">
+              {/* Left Section */}
+              <div className="flex-1">
+                <h2 className="text-2xl md:text-4xl font-bold">{proposal.title}</h2>
+                <p className="mt-2 text-sm md:text-base text-gray-500 max-w-md">
+                  {proposal.description}
+                </p>
               </div>
-            </div>
-          </Link>
 
-          <Link href="/proposal" className="flex flex-col md:flex-row justify-between items-start md:items-center px-4 py-6 bg-[#F6F6F6] rounded-2xl gap-6 shadow-sm">
-            {/* Left Section */}
-            <div className="flex-1">
-              <h2 className="text-2xl md:text-4xl font-bold">EDUCATION DAPP</h2>
-              <p className="mt-2 text-sm md:text-base text-gray-500 max-w-md">
-                Aplikasi pembelajaran interaktif (misalnya pakai NFT badge) untuk mengajarkan dasar Ethereum, wallet, smart contract.
-              </p>
-            </div>
-
-            {/* Right Section */}
-            <div className="text-left md:text-right min-w-[140px]">
-              <h2 className="text-xl md:text-3xl font-bold">2 ETH</h2>
-              <div className="mt-2 text-xs md:text-sm text-gray-600">
-                <p className="mb-1">vote for:</p>
-                <div className="flex gap-2 justify-end">
-                  <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">agree</span>
-                  <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">don't agree</span>
+              {/* Right Section */}
+              <div className="text-left md:text-right min-w-[140px]">
+                <h2 className="text-xl md:text-3xl font-bold">{proposal.amount} ETH</h2>
+                <div className="mt-2 text-xs md:text-sm text-gray-600">
+                  <p className="mb-1">vote for:</p>
+                  <div className="flex gap-2 justify-end">
+                    <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full">
+                      {proposal.votesFor} agree
+                    </span>
+                    <span className="bg-red-100 text-red-700 px-2 py-1 rounded-full">
+                      {proposal.votesAgainst} don't agree
+                    </span>
+                  </div>
                 </div>
+                <p className="mt-2 text-xs md:text-sm text-gray-500">
+                  <span className="font-semibold">Deadline:</span> {proposal.deadline}
+                </p>
+                <p className="mt-1 text-xs md:text-sm text-gray-500">
+                  <span className="font-semibold">Recipient:</span> {proposal.recipient}
+                </p>
+                <p className="mt-1 text-xs md:text-sm text-gray-500">
+                  <span className="font-semibold">Status:</span> {proposal.executed ? "Executed" : "Pending"}
+                </p>
               </div>
-            </div>
-          </Link>
+            </Link>
+          ))}
         </div>
       </div>
     </div>
