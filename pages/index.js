@@ -54,7 +54,7 @@ export default function Home() {
           votesAgainst: Number(proposal[7]),
           executed: proposal[8]
         })
-        setProposals(proposals);
+        setProposals(proposals.filter(p => !p.executed));
       }
     } catch (error) {
       console.error("Error fetching proposals:", error);

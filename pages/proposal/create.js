@@ -1,6 +1,7 @@
 import { Playfair_Display } from 'next/font/google'
 import { BrowserProvider, Contract, parseEther, parseUnits, formatUnits } from "ethers"
 import { useEffect, useState } from "react"
+import { useRouter } from 'next/router'
 
 import config from "../../config.json"
 import MyETHDAO from "../../abis/MyETHDAO.json"
@@ -13,6 +14,8 @@ const playfair = Playfair_Display({
 const CreateProposal = () => {
   const [signer, setSigner] = useState(null)
   const [grantsDao, setGrantsDao] = useState(null)
+
+  const router = useRouter()
 
   // form states
   const [title, setTitle] = useState("")
@@ -50,6 +53,7 @@ const CreateProposal = () => {
       )
       await tx.wait()
       alert("Proposal created successfully!")
+      router.push("/")
     } catch (error) {
       console.log("Error creating proposal:", error)
       alert("Failed to create proposal. Please try again.")
