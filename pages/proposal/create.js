@@ -24,11 +24,20 @@ const CreateProposal = () => {
   const [aboutOwner, setAboutOwner] = useState("")
 
   const loadBlockchainData = async () => {
-    await window.ethereum.request({ method: 'eth_requestAccounts' })
+    await window.ethereum.request({
+      method: "wallet_switchEthereumChain",
+      params: [{ chainId: "0xaa36a7" }], // 11155111 in hex
+    })
 
     const provider = new BrowserProvider(window.ethereum)
     const network = await provider.getNetwork()
     const signer = await provider.getSigner()
+
+    // cek config ada untuk chainId ini
+    if (!config[network.chainId] || !config[network.chainId].MyETHDAO) {
+      console.error("Kontrak untuk jaringan ini tidak ditemukan!");
+      return;
+    }
 
     const contract = new Contract(
       config[network.chainId].MyETHDAO.address,
