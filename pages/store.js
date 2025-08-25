@@ -1,6 +1,7 @@
 import { Playfair_Display } from 'next/font/google'
 import { BrowserProvider, Contract, parseEther, parseUnits, formatUnits } from "ethers"
 import { useEffect, useState } from "react"
+import { toast } from "react-toastify"
 
 import config from "../config.json"
 import MyETHDAO from "../abis/MyETHDAO.json"
@@ -31,7 +32,7 @@ const Treasury = () => {
     
         // cek config ada untuk chainId ini
         if (!config[network.chainId] || !config[network.chainId].MyETHDAO) {
-          console.error("Kontrak untuk jaringan ini tidak ditemukan!");
+          toast.error("No contract found for this network!");
           return;
         }
 
@@ -56,7 +57,7 @@ const Treasury = () => {
 
         const cleanedAmount = amount.replace(",", ".").trim()
         if (!/^\d+$/.test(cleanedAmount)) {
-            alert("Input harus berupa angka bulat dalam Gwei (tanpa titik atau koma)")
+            toast.warn("Input must be an integer in Gwei (without periods or commas)")
             return
         }
 
@@ -65,21 +66,21 @@ const Treasury = () => {
         try {
             amountInWei = parseUnits(amount, "gwei")
         } catch (err) {
-            alert("Invalid input")
+            toast.warn("Invalid input")
             return
         }
         
-        // Minimal stake = 0.01 ETH = 10_000_000 Gwei = 10_000_000_000_000_000 wei
-        const minStakeInWei = parseEther("0.01")
-        if (amountInWei < minStakeInWei) {
-            alert("Minimal store 0.01 ETH")
+        // Minimal store = 0.01 ETH = 10_000_000 Gwei = 10_000_000_000_000_000 wei
+        const minStoreInWei = parseEther("0.01")
+        if (amountInWei < minStoreInWei) {
+            toast.warn("Minimal store 0.01 ETH")
             return
         }
 
         const tx = await grantsDao.donateToTreasury({ value: amountInWei })
         await tx.wait()
 
-        alert("Store sukses")
+        toast.success("Store sukses")
     }
     
     useEffect(() => {
