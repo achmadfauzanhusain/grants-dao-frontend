@@ -2,6 +2,7 @@ import { Playfair_Display } from 'next/font/google'
 import { BrowserProvider, Contract, parseEther, parseUnits, formatUnits } from "ethers"
 import { useEffect, useState } from "react"
 import { useRouter } from 'next/router'
+import { toast } from "react-toastify"
 
 import config from "../../config.json"
 import MyETHDAO from "../../abis/MyETHDAO.json"
@@ -35,7 +36,7 @@ const CreateProposal = () => {
 
     // cek config ada untuk chainId ini
     if (!config[network.chainId] || !config[network.chainId].MyETHDAO) {
-      console.error("Kontrak untuk jaringan ini tidak ditemukan!");
+      toast.error("No contract found for this network!");
       return;
     }
 
@@ -50,7 +51,7 @@ const CreateProposal = () => {
   const createProposal = async () => {
     if (!grantsDao) return;
     if (!title || !summary || !ethAmount || !aboutOwner) {
-      alert("Please fill all fields")
+      toast.error("Please fill all fields")
       return
     }
     try {
@@ -61,11 +62,11 @@ const CreateProposal = () => {
         aboutOwner
       )
       await tx.wait()
-      alert("Proposal created successfully!")
+      toast.success("Proposal created successfully!")
       router.push("/")
     } catch (error) {
-      console.log("Error creating proposal:", error)
-      alert("Failed to create proposal. Please try again.")
+      toast.error("Error creating proposal:", error)
+      toast.error("Failed to create proposal. Please try again & Read the error in console.")
     }
   }
 

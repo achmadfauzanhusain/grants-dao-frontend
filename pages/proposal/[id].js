@@ -34,7 +34,7 @@ const Proposal = () => {
 
         // cek config ada untuk chainId ini
         if (!config[network.chainId] || !config[network.chainId].MyETHDAO) {
-            console.error("Kontrak untuk jaringan ini tidak ditemukan!");
+            toast.error("No contract found for this network!");
             return;
         }
 
@@ -64,6 +64,7 @@ const Proposal = () => {
             };
             setProposal(proposalDetail);
         } catch (error) {
+            toast.error("Failed to fetch proposal details. & read console for more info");
             console.error("Error fetching proposal details:", error);
         }
     }
@@ -74,7 +75,7 @@ const Proposal = () => {
         try {
             const tx = await grantsDao.vote(id, support)
             await tx.wait();
-            console.log("Vote successful:", tx);
+            toast.success("Vote successful:", tx);
         } catch (error) {
             alert(error.message);
         }
@@ -85,7 +86,7 @@ const Proposal = () => {
         try {
             const tx = await grantsDao.executeProposal(id)
             await tx.wait();
-            console.log("Proposal executed successfully:", tx);
+            toast.success("Proposal executed successfully:", tx);
             router.push('/');
         } catch (error) {
             alert(error.message);
